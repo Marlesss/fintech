@@ -1,0 +1,28 @@
+plugins {
+    alias(libs.plugins.protobuf)
+}
+
+dependencies {
+    implementation libs.spring.grpc
+    implementation libs.javax.annotation
+
+    implementation libs.protobuf.java.util
+    implementation libs.grpc.protobuf
+    implementation libs.grpc.stub
+    implementation libs.protobuf.java
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.24.4'
+    }
+
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.59.0'
+        }
+    }
+    generateProtoTasks{
+        all()*.plugins {grpc {}}
+    }
+}
