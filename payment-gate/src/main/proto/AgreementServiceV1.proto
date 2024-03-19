@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package com.academy.fintech.agreement;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+
+service AgreementService{
+  rpc Create(CreateAgreementRequest) returns (AgreementResponse) {}
+  rpc GetProducts(google.protobuf.Empty) returns (stream Product) {}
+  rpc ActivateAgreement(ActivateAgreementRequest) returns (stream ScheduledPayment) {}
+  rpc GetPaymentSchedule(PaymentScheduleRequest) returns (stream ScheduledPayment) {}
+  rpc GetApproximatedPaymentSchedule(ApproximatedPaymentScheduleRequest) returns (stream ScheduledPayment) {}
+  rpc GetAgreements(GetAgreementsRequest) returns (stream AgreementResponse) {}
+}
+
+message CreateAgreementRequest {
+  string clientId = 1;
+  ProductRequest product = 2;
+}
+
+message GetAgreementsRequest {
+  string clientId = 1;
+}
+
+message ProductRequest {
+  string code = 1;
+  int32 loanTerm = 2;
+  int64 disbursementAmount = 3;
+  string interest = 4;
+  int64 originationAmount = 5;
+}
+
+message AgreementResponse {
+  string agreementId = 1;
+}
+
+message Product {
+  string code = 1;
+  int32 minLoanTerm = 2;
+  int32 maxLoanTerm = 3;
+  int64 minPrincipalAmount = 4;
+  int64 maxPrincipalAmount = 5;
+  string minInterest = 6;
+  string maxInterest = 7;
+  int64 minOriginationAmount = 8;
+  int64 maxOriginationAmount = 9;
+}
+
+message ActivateAgreementRequest {
+  string agreementId = 1;
+  google.protobuf.Timestamp disbursement_date = 2;
+}
+
+enum PaymentStatus {
+  OVERDUE = 0;
+  PAID = 1;
+  FUTURE = 2;
+}
+message ScheduledPayment {
+  PaymentStatus status = 1;
+  google.protobuf.Timestamp paymentDate = 2;
+  string periodPayment = 3;
+  string interestPayment = 4;
+  string principalPayment = 5;
+  int32 periodNumber = 6;
+}
+
+message PaymentScheduleRequest {
+  string agreementId = 1;
+}
+
+message ApproximatedPaymentScheduleRequest {
+  string agreementId = 1;
+}
