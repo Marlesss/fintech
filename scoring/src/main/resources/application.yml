@@ -1,0 +1,13 @@
+server:
+  port: 8086
+
+grpc:
+  port: 9096
+  enable-reflection: true
+
+origination:
+  client:
+    agreement:
+      grpc:
+        host: "localhost"
+        port: 9095
