@@ -4,6 +4,7 @@ import com.academy.fintech.api.core.origination.client.grpc.OriginationGrpcClien
 import com.academy.fintech.api.public_interface.application.dto.ApplicationDto;
 import com.academy.fintech.application.ApplicationRequest;
 import com.academy.fintech.application.ApplicationResponse;
+import com.academy.fintech.application.ClientData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,12 @@ public class OriginationClientService {
 
     private static ApplicationRequest mapDtoToRequest(ApplicationDto applicationDto) {
         return ApplicationRequest.newBuilder()
-                .setFirstName(applicationDto.firstName())
-                .setLastName(applicationDto.lastName())
-                .setEmail(applicationDto.email())
-                .setSalary(applicationDto.salary())
+                .setClientData(ClientData.newBuilder()
+                        .setFirstName(applicationDto.firstName())
+                        .setLastName(applicationDto.lastName())
+                        .setEmail(applicationDto.email())
+                        .setSalary(applicationDto.salary())
+                        .build())
                 .setDisbursementAmount(applicationDto.amount())
                 .build();
     }
