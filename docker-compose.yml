@@ -1,17 +1,28 @@
 version: '3.8'
 services:
   db:
-    image: postgres:14.1-alpine
+    image: postgres:14.11
     restart: always
     environment:
-      - POSTGRES_DB=fintech
+      - POSTGRES_MULTIPLE_DATABASES=product_engine,origination
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    expose:
+      - ${DB_PORT}
     ports:
-      - '5432:5432'
+      - ${DB_PORT}:${DB_PORT}
+    command: -p ${DB_PORT}
     volumes:
       - db:/var/lib/postgresql/data
+      - ./docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
 
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - ${ADMINER_PORT}:${ADMINER_PORT}
 volumes:
   db:
     driver: local
