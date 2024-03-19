@@ -1,0 +1,17 @@
+server:
+  port: 8085
+
+grpc:
+  port: 9095
+  enable-reflection: true
+
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+    enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:${spring.datasource.port}/product_engine
+    port: 5432
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
